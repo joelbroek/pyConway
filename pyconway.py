@@ -19,7 +19,7 @@ def main():
     curses.noecho()
     curses.curs_set(0)
     iteration = 0
-    panel = get_scene(HEIGHT, WIDTH, isRandom = True)
+    panel = get_new_panel(HEIGHT, WIDTH, isRandom = True)
 
     def draw_panel():
         for y in range(0, HEIGHT):
@@ -41,7 +41,17 @@ def main():
 
     curses.endwin()
 
-def get_scene(h, w, isRandom):
+def get_new_panel(h, w, isRandom):
+    """Generates a h * w ndarray for Conway's game. If isRandom, filled randomly from [0,1] else 0
+
+    Args:
+        h (int): height of panel
+        w (int): width of panel
+        isRandom (bool): whether panel should be filled randomly from [0,1], or with 0
+
+    Returns:
+        ndarray: the new panel
+    """
     panel = np.ndarray((h,w), dtype = np.int32)
     for y in range(0,h):
         for x in range(0,w):
@@ -50,7 +60,17 @@ def get_scene(h, w, isRandom):
 
 
 def get_next_panel(prev_panel, h, w):
-    panel = get_scene(h, w, False) # get blank scene
+    """Generates next panel for Conway's Game of Life
+
+    Args:
+        prev_panel (ndarray): [array with dimension h * w]
+        h (int): height of panel
+        w (int): width of panel
+
+    Returns:
+        ndarray: next panel of Conway's Game
+    """
+    panel = get_new_panel(h, w, False) # get blank scene
 
 
     # gather adjacency data
@@ -71,7 +91,7 @@ def get_next_panel(prev_panel, h, w):
             if y - 1 >= 0: panel[y][x] += prev_panel[y-1][x] # UP
             if y + 1 < h: panel[y][x] += prev_panel[y+1][x] # DOWN
 
-    new_panel = get_scene(h,w,False)
+    new_panel = get_new_panel(h,w,False)
 
     # determines which cells should be alive in next iteration
     for y in range(0,h):
