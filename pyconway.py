@@ -1,6 +1,5 @@
 import curses
 import time
-import threading
 import numpy as np
 import random
 
@@ -9,11 +8,10 @@ import random
 def main():
     """Initialises Conway's Game of Life
     """
-    DURATION = 10
+    DURATION = 50
 
     screen = curses.initscr()
     yx = screen.getmaxyx()
-    print(yx)
     HEIGHT = yx[1] - 1
     WIDTH = yx[0] - 1
     curses.noecho()
